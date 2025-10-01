@@ -1,0 +1,10 @@
+SET
+    NOCOUNT ON;
+
+SELECT
+    C.NAME AS african_city_name
+FROM
+    CITY C
+    LEFT JOIN COUNTRY COU ON C.COUNTRYCODE = COU.CODE
+WHERE
+    CONTINENT = 'Africa' go

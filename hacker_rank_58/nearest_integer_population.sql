@@ -1,0 +1,7 @@
+SET
+    NOCOUNT ON;
+
+SELECT
+    ROUND(AVG(POPULATION), 1)
+FROM
+    CITY go
