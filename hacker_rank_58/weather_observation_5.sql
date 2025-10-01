@@ -1,0 +1,23 @@
+
+-- Approach 1
+SET
+    NOCOUNT ON;
+
+SELECT DISTINCT
+    TOP 1 CITY,
+    LEN (city)
+FROM
+    STATION
+ORDER BY
+    LEN (CITY) ASC,
+    CITY ASC
+SELECT DISTINCT
+    TOP 1 CITY,
+    LEN (CITY)
+FROM
+    STATION
+ORDER BY
+    LEN (CITY) DESC,
+    CITY DESC;
+
+go
