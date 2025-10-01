@@ -2,6 +2,7 @@ SQL Practice & Projects
 
 Details: Collection of SQL problems solved and SQL-focused projects — HackerRank: 58 problems, LeetCode: 50 problems.
 Organized by difficulty, platform, query type, and project. Includes schemas, sample queries, and instructions to run example datasets.
+![Uploading SQL Projects and Database Illustration.png…]()
 
 🚀 About this repo
 
