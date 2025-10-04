@@ -1,0 +1,7 @@
+SET
+    NOCOUNT ON;
+
+SELECT
+    REPLICATE ('* ', VALUE)
+FROM
+    GENERATE_SERIES (20, 1) go
