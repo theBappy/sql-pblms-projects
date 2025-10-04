@@ -80,3 +80,75 @@ ORDER BY
     cte4.submission_date;
 
 go
+-----------------------------------------------
+SET
+    NOCOUNT ON;
+
+WITH
+    Hackers_Streak AS (
+        SELECT
+            s.submission_date,
+            s.submission_id,
+            s.hacker_id,
+            h.name,
+            DAY (s.submission_date) AS day_num,
+            DENSE_RANK() OVER (
+                PARTITION BY
+                    s.hacker_id
+                ORDER BY
+                    s.submission_date
+            ) AS rnk
+        FROM
+            Submissions s
+            JOIN Hackers h ON s.hacker_id = h.hacker_id
+        WHERE
+            s.submission_date BETWEEN '2016-03-01' AND '2016-03-15'
+    ),
+    Unique_Hackers AS (
+        SELECT
+            submission_date,
+            COUNT(DISTINCT hacker_id) AS unique_h_count
+        FROM
+            Hackers_Streak
+        WHERE
+            day_num = rnk
+        GROUP BY
+            submission_date
+    ),
+    Submission_per_hackers AS (
+        SELECT
+            submission_date,
+            hacker_id,
+            COUNT(submission_id) AS s_count
+        FROM
+            Hackers_Streak
+        GROUP BY
+            submission_date,
+            hacker_id
+    ),
+    Max_submission_per_day AS (
+        SELECT
+            *,
+            ROW_NUMBER() OVER (
+                PARTITION BY
+                    submission_date
+                ORDER BY
+                    s_count DESC,
+                    hacker_id ASC
+            ) AS rn
+        FROM
+            Submission_per_hackers
+    )
+SELECT
+    Max_submission_per_day.submission_date,
+    u.unique_h_count,
+    Max_submission_per_day.hacker_id,
+    h.name
+FROM
+    Max_submission_per_day
+    JOIN Hackers h ON h.hacker_id = Max_submission_per_day.hacker_id
+    JOIN Unique_Hackers u ON u.submission_date = Max_submission_per_day.submission_date
+WHERE
+    rn = 1
+ORDER BY
+    Max_submission_per_day.submission_date go
